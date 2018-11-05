@@ -5,18 +5,18 @@ import {
   Text,
   View,
 } from 'react-native';
-import { WebBrowser, AuthSession } from 'expo';
+
+import { 
+  WebBrowser, 
+  AuthSession 
+} from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
 const OFFICE_CLIENT_ID = "a37afbc5-0e25-4feb-b59d-745fdecd0f51";
 const scope = "Calendars.Read Calendars.Read.Shared Calendars.ReadWrite Calendars.ReadWrite.Shared Contacts.Read Contacts.Read.Shared Contacts.ReadWrite User.Read offline_access User.ReadBasic.All User.ReadWrite"
 const redirectUrl = "exp://expo.io/@dlosey/NativeProject";
-const authUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?" +
-        `client_id=${OFFICE_CLIENT_ID}` +
-        `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
-        `&scope=${encodeURIComponent(scope)}`
-const component = this;
+
 export default class HomeScreen extends React.Component {
   state = {
     isLoggedIn: false,
@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
   _handlePressAsync = async () => {
     let result = await AuthSession.startAsync({
       authUrl:
-        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?" +
+        `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
         `client_id=${OFFICE_CLIENT_ID}` +
         `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
         `&scope=${encodeURIComponent(scope)}` + 
@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
 
     });
     this.setState({ result });
-    console.log()
+
     let headers = {
       "method": "POST",
       "body": `{"AuthorizationCode": ${ JSON.stringify(result.params.code) }}`,
@@ -46,7 +46,6 @@ export default class HomeScreen extends React.Component {
       }
     };
 
-    console.log("state", this.state);
     fetch("https://rooms.nexient.com/gateway/api/ms-graph-authorization/v1/AccessToken", headers)
       .then(response => {
         return response.json();
@@ -60,7 +59,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button title="Open FB Auth" onPress={this._handlePressAsync} />
+        <Button title="Open Office Auth" onPress={this._handlePressAsync} />
         {this.state.result ? (
           <Text>{JSON.stringify(this.state.rooms)}</Text>
         ) : null}
