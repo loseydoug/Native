@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Image,
   Platform,
   ScrollView,
@@ -13,6 +14,10 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
+  state = {
+    isLoggedIn: false,
+  };
+
   static navigationOptions = {
     header: null,
   };
@@ -63,6 +68,18 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
+
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Button title="Open FB Auth" onPress={this._handlePressAsync} />
+  //       {this.state.result ? (
+  //         <Text>{JSON.stringify(this.state.result)}</Text>
+  //       ) : null}
+  //       <Text>{authUrl}</Text>
+  //       </View>
+  //   );
+  // }
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
